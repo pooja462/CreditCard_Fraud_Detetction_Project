@@ -1,0 +1,116 @@
+/* Reset */
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family: Arial, sans-serif;
+}
+
+/* Body */
+body{
+    display:flex;
+    background:#f4f6f9;
+}
+
+/* Sidebar */
+.sidebar{
+    width:250px;
+    height:100vh;
+    background:black;
+    position:fixed;
+    left:0;
+    top:0;
+    color:white;
+}
+
+.sidebar h2{
+    text-align:center;
+    padding:20px;
+    border-bottom:1px solid rgba(255,255,255,0.2);
+}
+
+.sidebar a{
+    display:block;
+    padding:15px 20px;
+    color:white;
+    text-decoration:none;
+    transition:0.3s;
+}
+
+.sidebar a:hover{
+    background:#2a5298;
+}
+
+/* Main Content */
+.main-content{
+    margin-left:250px;
+    width:calc(100% - 250px);
+    min-height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    background:linear-gradient(135deg,#70777E,#9D9287);
+}
+
+/* Prediction Box */
+.box{
+    width:420px;
+    background:black;
+    padding:30px;
+    border-radius:12px;
+    box-shadow:0 5px 20px rgba(0,0,0,0.2);
+}
+
+/* Heading */
+.box h2{
+    text-align:center;
+    margin-bottom:20px;
+    color:#1e3c72;
+}
+
+/* Inputs */
+input[type="number"]{
+    width:100%;
+    padding:12px;
+    margin:10px 0;
+    border:1px solid #ccc;
+    border-radius:6px;
+    font-size:15px;
+}
+
+/* Button */
+input[type="submit"]{
+    width:100%;
+    padding:12px;
+    margin-top:10px;
+    border:none;
+    border-radius:6px;
+    background:#1e3c72;
+    color:white;
+    font-size:16px;
+    cursor:pointer;
+    transition:0.3s;
+}
+
+input[type="submit"]:hover{
+    background:#2a5298;
+}
+
+/* Result Box */
+#result{
+    margin-top:20px;
+    padding:15px;
+    border-radius:8px;
+    background:#f8f9fa;
+    border-left:5px solid #1e3c72;
+}
+
+#result h3{
+    color:#1e3c72;
+    margin-bottom:10px;
+}
+
+#result p{
+    margin:8px 0;
+    font-size:16px;
+}

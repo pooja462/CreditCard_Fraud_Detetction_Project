@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Bulk Fraud Detection</title>
+    <link rel="stylesheet" href="bulk.css">
+</head>
+
+<body>
+
+<div class="sidebar">
+    <h2>Fraud Detector</h2>
+    <a href="dashboard.html">Dashboard</a>
+    <a href="single.html">Single Prediction</a>
+    <a href="bulk.html" class="active">Bulk Prediction</a>
+    <a href="history.html">History</a>
+    <a href="login.html">Logout</a>
+</div>
+
+<div class="main-content">
+
+    <div class="box">
+
+        <h2>Upload CSV File</h2>
+
+        <form id="bulkForm">
+            <input type="file" id="file" accept=".csv" required>
+            <input type="submit" value="Upload & Predict">
+        </form>
+
+        <div id="summary"></div>
+        <div id="tableContainer"></div>
+
+    </div>
+
+</div>
+
+<script>
+document.getElementById("bulkForm").addEventListener("submit", async function(e){
+    e.preventDefault();
+
+    const file = document.getElementById("file").files[0];
+    const token = localStorage.getItem("token");
+
+    // ----------------------
+    // TOKEN CHECK
+    // ----------------------
+    if (!token) {
+        document.getElementById("summary").innerHTML =
+            "<p style='color:red'>Please login first</p>";
+        return;
+    }
+
+    if (!file) {
+        document.getElementById("summary").innerHTML =
+            "<p style='color:red'>Please upload CSV file</p>";
+        return;
+    }
+
+    const formData = new FormData();
+    formData.append("file", file);
+
+    try {
+        const response = await fetch("http://127.0.0.1:8000/predict-bulk", {
+            method: "POST",
+            headers: {
+                "Authorization": "Bearer " + token
+            },
+            body: formData
+        });
+
+        const data = await response.json();
+        console.log("API RESPONSE:", data);
+
+        // ----------------------
+        // TOKEN EXPIRED HANDLING
+        // ----------------------
+        if (response.status === 401) {
+            localStorage.removeItem("token");
+            document.getElementById("summary").innerHTML =
+                "<p style='color:red'>Session expired. Please login again.</p>";
+            return;
+        }
+
+        if (!response.ok) {
+            throw new Error(data.detail || "API Error");
+        }
+
+        // ----------------------
+        // SUMMARY
+        // ----------------------
+        document.getElementById("summary").innerHTML = `
+            <h3>Summary</h3>
+            <p><b>Total Transactions:</b> ${data.total}</p>
+            <p><b>Fraud Cases:</b> ${data.fraud_count}</p>
+        `;
+
+        // ----------------------
+        // TABLE (IMPORTANT FIX HERE)
+        // ----------------------
+
+        let html = `
+            <h3>All Transactions</h3>
+            <table border="1" cellpadding="5">
+                <tr>
+                    <th>Time</th>
+                    <th>Amount</th>
+                    <th>Probability</th>
+                    <th>Prediction</th>
+                    <th>Risk Level</th>
+                </tr>
+        `;
+
+        // IMPORTANT: backend must send "fraud_cases"
+        data.fraud_cases.forEach(item => {
+            html += `
+                <tr>
+                    <td>${item.Time ?? "-"}</td>
+                    <td>${item.Amount ?? "-"}</td>
+                    <td>${Number(item.probability ?? 0).toFixed(4)}</td>
+                    <td>${item.prediction ?? "-"}</td>
+                    <td>${item.risk_level ?? "-"}</td>
+                </tr>
+            `;
+        });
+
+        html += "</table>";
+
+        document.getElementById("tableContainer").innerHTML = html;
+
+    } catch (error) {
+
+        console.log("ERROR:", error);
+
+        document.getElementById("summary").innerHTML =
+            `<p style='color:red'>${error.message}</p>`;
+    }
+});
+</script>
+
+</body>
+</html>

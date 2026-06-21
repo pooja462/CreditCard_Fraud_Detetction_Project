@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register</title>
+
+    <link rel="stylesheet" href="register.css">
+</head>
+
+<body>
+
+    <h1>Fraud Detection System</h1>
+
+    <div class="box">
+
+        <form id="registerForm">
+
+            <input type="text" id="username" placeholder="Enter Username" required>
+
+            <input type="email" id="email" placeholder="Enter Email" required>
+
+            <input type="password" id="password" placeholder="Enter Password" required>
+
+            <input type="password" id="confirmPassword" placeholder="Confirm Password" required>
+
+            <input type="submit" value="Register">
+
+        </form>
+
+        <p id="message" style="color:red; font-weight:bold;"></p>
+
+        <p style="color:white;">
+            Already have account?
+            <a href="login.html" style="color:white;">Login</a>
+        </p>
+
+    </div>
+
+<script>
+
+document.getElementById("registerForm").addEventListener("submit", async function(e){
+
+    e.preventDefault();
+
+    const username = document.getElementById("username").value;
+    const email = document.getElementById("email").value;
+    const password = document.getElementById("password").value;
+    const confirmPassword = document.getElementById("confirmPassword").value;
+
+    const message = document.getElementById("message");
+
+    if(password !== confirmPassword){
+        message.innerText = "Passwords do not match";
+        return;
+    }
+
+    try {
+
+        const res = await fetch("http://127.0.0.1:8000/create-user", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                username,
+                email,
+                password
+            })
+        });
+
+        const data = await res.json();
+
+        if(res.ok){
+            message.style.color = "lightgreen";
+            message.innerText = "Registration successful! Redirecting...";
+
+            setTimeout(() => {
+                window.location.href = "login.html";
+            }, 1500);
+
+        } else {
+            message.innerText = data.detail || "Registration failed";
+        }
+
+    } catch(error){
+        message.innerText = "Server not reachable";
+    }
+
+});
+
+</script>
+
+</body>
+</html>

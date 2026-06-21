@@ -1,0 +1,81 @@
+body{
+    margin:0;
+    font-family:Arial,sans-serif;
+    background:linear-gradient(135deg,#70777E,#9D9287);
+}
+
+/* Sidebar */
+.sidebar{
+    width:250px;
+    height:100vh;
+    background:black;
+    position:fixed;
+    left:0;
+    top:0;
+    color:white;
+}
+
+.sidebar h2{
+    text-align:center;
+    padding:20px;
+}
+
+.sidebar a{
+    display:block;
+    padding:15px 20px;
+    text-decoration:none;
+    color:white;
+}
+
+.sidebar a:hover{
+    background:#2a5298;
+}
+
+.active{
+    background:#2a5298;
+}
+
+/* Main Area */
+.main-content{
+    margin-left:250px;
+    height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+}
+
+/* Upload Box */
+.box{
+    width:400px;
+    background:white;
+    padding:30px;
+    border-radius:12px;
+    box-shadow:0px 4px 15px rgba(0,0,0,0.2);
+    text-align:center;
+}
+
+.box h2{
+    margin-bottom:20px;
+}
+
+/* File Input */
+input[type="file"]{
+    width:100%;
+    margin:15px 0;
+}
+
+/* Submit Button */
+input[type="submit"]{
+    width:100%;
+    padding:12px;
+    background:#1e3c72;
+    color:white;
+    border:none;
+    border-radius:6px;
+    cursor:pointer;
+    font-size:16px;
+}
+
+input[type="submit"]:hover{
+    background:#2a5298;
+}

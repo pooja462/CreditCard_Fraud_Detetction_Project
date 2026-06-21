@@ -1,0 +1,50 @@
+body {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+    background: #f2f2f2;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+/* Logout box */
+.logout-box {
+    background: white;
+    padding: 30px;
+    border-radius: 12px;
+    text-align: center;
+    width: 300px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+}
+
+.logout-box h2 {
+    margin-bottom: 20px;
+    font-size: 18px;
+}
+
+/* Logout button */
+.logout-box button {
+    background: red;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    width: 100%;
+    margin-bottom: 10px;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+/* Cancel link */
+.logout-box a {
+    display: inline-block;
+    text-decoration: none;
+    color: #333;
+    margin-top: 5px;
+}
+
+.logout-box button:hover {
+    background: darkred;
+}

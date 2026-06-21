@@ -1,0 +1,50 @@
+body{
+    margin:0;
+    padding:0;
+    background: linear-gradient(135deg, #70777E,#9D9287);
+    height:100vh;
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    flex-direction:column;
+}
+
+*{
+    box-sizing:border-box;
+}
+
+h1{
+    text-align:center;
+    color:white;
+    margin-bottom:20px;
+}
+
+.box{
+    width:400px;
+    background:black;
+    padding:30px;
+    border-radius:10px;
+    box-shadow:0 4px 15px rgba(0,0,0,0.3);
+}
+
+.box input{
+    width:100%;
+    margin:8px 0;
+    padding:12px;
+    border:none;
+    border-radius:5px;
+}
+
+/* Button */
+input[type="submit"]{
+    background:#1e3c72;
+    color:white;
+    font-size:16px;
+    cursor:pointer;
+    margin-top:10px;
+}
+
+input[type="submit"]:hover{
+    background:#2a5298;
+}

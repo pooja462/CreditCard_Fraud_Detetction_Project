@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Logout</title>
+    <link rel="stylesheet" href="logout.css">
+</head>
+
+<body>
+
+<div class="logout-box">
+
+    <h2>Are you sure you want to logout?</h2>
+
+    <button onclick="logout()">Yes, Logout</button>
+    <a href="dashboard.html">Cancel</a>
+
+</div>
+
+<script>
+function logout() {
+    localStorage.removeItem("token");
+    window.location.href = "login.html";
+}
+</script>
+
+</body>
+</html>

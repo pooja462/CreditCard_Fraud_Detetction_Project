@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Single Fraud Prediction</title>
+    <link rel="stylesheet" href="single.css">
+</head>
+
+<body>
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <h2>Fraud Detector</h2>
+
+        <a href="dashboard.html">Dashboard</a>
+        <a href="single.html">Single Prediction</a>
+        <a href="bulk.html">Bulk Prediction</a>
+        <a href="history.html">History</a>
+        <a href="login.html">Logout</a>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+
+        <div class="box">
+
+            <h2>Single Transaction Prediction</h2>
+
+            <form id="predictionForm">
+
+                <input type="number" id="Time" placeholder="Enter Time" required>
+
+                <input type="number" id="Amount" placeholder="Enter Amount" required>
+
+                <input type="submit" value="Predict Fraud">
+
+            </form>
+
+            <div id="result"></div>
+
+        </div>
+
+    </div>
+
+    <script>
+
+        document.getElementById("predictionForm")
+        .addEventListener("submit", async function (e) {
+
+            e.preventDefault();
+
+            const token = localStorage.getItem("token"); // 🔥 IMPORTANT
+
+            const Time = document.getElementById("Time").value;
+            const Amount = document.getElementById("Amount").value;
+
+            const formData = new FormData();
+            formData.append("Time", Time);
+            formData.append("Amount", Amount);
+
+            try {
+
+                const response = await fetch(
+                    "http://127.0.0.1:8000/predict_single",
+                    {
+                        method: "POST",
+                        headers: {
+                            "Authorization": "Bearer " + token
+                        },
+                        body: formData
+                    }
+                );
+
+                const data = await response.json();
+
+                console.log("API RESPONSE:", data); // 🔥 DEBUG
+
+                if (!response.ok) {
+                    document.getElementById("result").innerHTML =
+                    `
+                        <h3>Error</h3>
+                        <p>${data.detail || "Request Failed"}</p>
+                    `;
+                    return;
+                }
+
+                const result = data.result;
+                const risk = data.risk_level;
+
+                document.getElementById("result").innerHTML =
+                `
+                    <h3>Prediction Result</h3>
+                    <p><strong>Status:</strong> ${result}</p>
+                    <p><strong>Risk Level:</strong> ${risk}</p>
+                `;
+
+            }
+            catch (error) {
+
+                document.getElementById("result").innerHTML =
+                `
+                    <h3>Prediction Failed</h3>
+                    <p>Server not reachable</p>
+                `;
+
+                console.error(error);
+            }
+
+        });
+
+    </script>
+
+</body>
+
+</html>

@@ -1,0 +1,131 @@
+/* ======================
+   GLOBAL
+====================== */
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: #f4f6f9;
+}
+
+/* ======================
+   SIDEBAR
+====================== */
+.sidebar {
+    width: 220px;
+    height: 100vh;
+    background: black;
+    position: fixed;
+    top: 0;
+    left: 0;
+    padding-top: 20px;
+}
+
+.sidebar h2 {
+    color: white;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.sidebar a {
+    display: block;
+    color: #ddd;
+    padding: 12px 20px;
+    text-decoration: none;
+    transition: 0.3s;
+}
+
+.sidebar a:hover,
+.sidebar a.active {
+    background: #374151;
+    color: #fff;
+}
+
+/* ======================
+   MAIN CONTENT
+====================== */
+.main-content {
+    margin-left: 220px;
+    padding: 20px;
+}
+
+h1 {
+    color: #111827;
+}
+
+/* ======================
+   FILTER SECTION
+====================== */
+select {
+    padding: 8px 12px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    margin-left: 10px;
+    cursor: pointer;
+}
+
+input[type="checkbox"] {
+    transform: scale(1.2);
+    margin-left: 15px;
+}
+
+/* ======================
+   SUMMARY BOX
+====================== */
+#summary {
+    margin-top: 15px;
+    padding: 15px;
+    background: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+
+/* ======================
+   TABLE CONTAINER
+====================== */
+.history-box {
+    margin-top: 20px;
+    background: black;
+    padding: 15px;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    overflow-x: auto;
+}
+
+/* ======================
+   TABLE STYLE
+====================== */
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th {
+    background: #111827;
+    color: white;
+    padding: 12px;
+    text-align: left;
+}
+
+td {
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+}
+
+tr:hover {
+    background: #f1f5f9;
+}
+
+/* ======================
+   RESPONSIVE
+====================== */
+@media (max-width: 768px) {
+    .sidebar {
+        width: 100%;
+        height: auto;
+        position: relative;
+    }
+
+    .main-content {
+        margin-left: 0;
+    }
+}

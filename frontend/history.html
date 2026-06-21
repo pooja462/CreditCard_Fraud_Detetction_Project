@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Prediction History</title>
+    <link rel="stylesheet" href="history.css">
+</head>
+
+<body>
+
+<div class="sidebar">
+    <h2>Fraud Detector</h2>
+    <a href="dashboard.html">Dashboard</a>
+    <a href="single.html">Single Prediction</a>
+    <a href="bulk.html">Bulk Prediction</a>
+    <a href="history.html" class="active">History</a>
+    <a href="login.html">Logout</a>
+</div>
+
+<div class="main-content">
+
+    <h1>Prediction History</h1>
+
+    <!-- FILTER UI -->
+    <div class="filter-box">
+
+        <select id="typeFilter">
+            <option value="single">Single History</option>
+            <option value="bulk">Bulk History</option>
+        </select>
+
+        <label>
+            <input type="checkbox" id="onlyFraud">
+            Only Fraud
+        </label>
+
+        <button onclick="loadHistory()">Load</button>
+    </div>
+
+    <div id="output"></div>
+
+</div>
+
+<script>
+
+async function loadHistory() {
+
+    const token = localStorage.getItem("token");
+    const type = document.getElementById("typeFilter").value;
+    const onlyFraud = document.getElementById("onlyFraud").checked;
+
+    const output = document.getElementById("output");
+
+    // ---------------- CHECK TOKEN ----------------
+    if (!token) {
+        output.innerHTML = "<p style='color:red'>Please login first</p>";
+        return;
+    }
+
+    output.innerHTML = "<p>Loading...</p>";
+
+    const url = `http://127.0.0.1:8000/history?type=${type}&only_fraud=${onlyFraud}`;
+
+    try {
+
+        const res = await fetch(url, {
+            method: "GET",
+            headers: {
+                "Authorization": "Bearer " + token
+            }
+        });
+
+        const data = await res.json();
+        console.log("HISTORY RESPONSE:", data);
+
+        // ---------------- ERROR HANDLING ----------------
+        if (!res.ok) {
+            output.innerHTML =
+                `<p style="color:red">${data.detail || "API Error"}</p>`;
+            return;
+        }
+
+        // ---------------- SINGLE HISTORY ----------------
+        if (type === "single") {
+
+            const rows = data.data || [];
+
+            if (rows.length === 0) {
+                output.innerHTML = "<p>No records found</p>";
+                return;
+            }
+
+            renderTable(rows, "Single Prediction History");
+            return;
+        }
+
+        // ---------------- BULK HISTORY ----------------
+        if (type === "bulk") {
+
+            const rows = data.fraud_records || [];
+
+            if (rows.length === 0) {
+                output.innerHTML = "<p>No fraud records found</p>";
+                return;
+            }
+
+            renderTable(rows, "Bulk Fraud History");
+            return;
+        }
+
+    } catch (error) {
+
+        console.log("ERROR:", error);
+
+        output.innerHTML =
+            "<p style='color:red'>Backend not reachable / CORS / Token issue</p>";
+    }
+}
+
+
+// ---------------- TABLE RENDER FUNCTION ----------------
+function renderTable(rows, title) {
+
+    let html = `
+        <h3>${title}</h3>
+        <table border="1" cellpadding="5">
+            <tr>
+                <th>ID</th>
+                <th>Probability</th>
+                <th>Risk Level</th>
+                <th>Date</th>
+            </tr>
+    `;
+
+    rows.forEach(r => {
+        html += `
+            <tr>
+                <td>${r.id ?? "-"}</td>
+                <td>${(r.probability ?? 0).toFixed(4)}</td>
+                <td>${r.risk_level ?? "-"}</td>
+                <td>${r.created_at ?? "-"}</td>
+            </tr>
+        `;
+    });
+
+    html += "</table>";
+
+    document.getElementById("output").innerHTML = html;
+}
+
+// auto load on page open
+loadHistory();
+
+</script>
+
+</body>
+</html>
